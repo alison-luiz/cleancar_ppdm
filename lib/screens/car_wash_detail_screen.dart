@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import '../models/car_wash.dart';
+import '../models/service.dart';
 import '../widgets/custom_drawer.dart';
 
-class CarWashDetailScreen extends StatelessWidget {
+class CarWashDetailScreen extends StatefulWidget {
   const CarWashDetailScreen({super.key});
+
+  @override
+  _CarWashDetailScreenState createState() => _CarWashDetailScreenState();
+}
+
+class _CarWashDetailScreenState extends State<CarWashDetailScreen> {
+  final List<Service> _selectedServices = [];
 
   @override
   Widget build(BuildContext context) {
@@ -69,17 +77,42 @@ class CarWashDetailScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: ListTile(
+                    child: CheckboxListTile(
                       title: Text(service.name),
                       subtitle: Text(
                         'Preço: R\$ ${service.price.toStringAsFixed(2)}\nDuração: ${service.duration}',
                       ),
-                      leading: const Icon(Icons.cleaning_services,
-                          size: 40, color: Colors.blueAccent),
+                      value: _selectedServices.contains(service),
+                      onChanged: (bool? value) {
+                        setState(() {
+                          if (value == true) {
+                            _selectedServices.add(service);
+                          } else {
+                            _selectedServices.remove(service);
+                          }
+                        });
+                      },
+                      secondary: const Icon(
+                        Icons.cleaning_services,
+                        size: 40,
+                        color: Colors.blueAccent,
+                      ),
                     ),
                   );
                 },
               ),
+            ),
+            ElevatedButton(
+              onPressed: _selectedServices.isNotEmpty
+                  ? () {
+                      Navigator.pushNamed(
+                        context,
+                        '/schedule', // Navega para a tela de agendamento
+                        arguments: _selectedServices,
+                      );
+                    }
+                  : null, // Desabilita o botão se nenhum serviço for selecionado
+              child: const Text('Prosseguir para Agendamento'),
             ),
           ],
         ),

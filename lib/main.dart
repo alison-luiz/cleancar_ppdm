@@ -1,3 +1,6 @@
+import 'package:cleancar/models/appointment.dart';
+import 'package:cleancar/screens/appointment_list_screen.dart';
+import 'package:cleancar/screens/schedule_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/car_wash_list_screen.dart';
@@ -19,6 +22,14 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   List<CarWash> carWashes = [];
+
+  List<Appointment> _appointments = [];
+
+  void _addAppointment(Appointment appointment) {
+    setState(() {
+      _appointments.add(appointment);
+    });
+  }
 
   @override
   void initState() {
@@ -84,6 +95,14 @@ class MyAppState extends State<MyApp> {
               },
             ),
         '/detail': (context) => const CarWashDetailScreen(),
+        '/schedule': (context) => ScheduleScreen(
+              selectedServices:
+                  ModalRoute.of(context)!.settings.arguments as List<Service>,
+              onAddAppointment: _addAppointment,
+            ),
+        '/appointments': (context) => AppointmentListScreen(
+              appointments: _appointments,
+            ),
       },
     );
   }

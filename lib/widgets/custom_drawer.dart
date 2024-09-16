@@ -42,6 +42,13 @@ class CustomDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/add');
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.add),
+            title: const Text('Serviços Agendados'),
+            onTap: () {
+              Navigator.pushNamed(context, '/appointments');
+            },
+          ),
         ],
       ),
     );
