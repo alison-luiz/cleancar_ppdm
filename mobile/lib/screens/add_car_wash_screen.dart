@@ -5,6 +5,7 @@ import '../widgets/custom_drawer.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_notification.dart';
 import '../services/car_wash_service.dart';
+import '../utils/api.dart';
 
 class AddCarWashScreen extends StatefulWidget {
   final Function(CarWash) onAddCarWash;
@@ -17,6 +18,7 @@ class AddCarWashScreen extends StatefulWidget {
 
 class AddCarWashScreenState extends State<AddCarWashScreen> {
   final List<Service> _services = [];
+
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _cepController = TextEditingController();
@@ -29,6 +31,8 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
   String? _notificationMessage;
   bool _isErrorNotification = false;
 
+  final CarWashService _carWashService = CarWashService();
+
   void _showNotification(String message, bool isError) {
     setState(() {
       _notificationMessage = message;
@@ -40,6 +44,37 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
         _notificationMessage = null;
       });
     });
+  }
+
+  Future<void> _saveCarWash() async {
+    if (_formKey.currentState!.validate()) {
+      if (_services.isEmpty) {
+        setState(() {
+          _serviceError = true;
+        });
+      } else {
+        setState(() {
+          _serviceError = false;
+        });
+
+        CarWash newCarWash = CarWash(
+          id: IdService.generateId(),
+          name: _nameController.text,
+          address: _addressController.text,
+          cep: _cepController.text,
+          services: _services,
+        );
+
+        try {
+          await _carWashService.create(newCarWash.toJson());
+          widget.onAddCarWash(newCarWash);
+          _showNotification('Lava Rápido salvo com sucesso!', false);
+          Navigator.pop(context);
+        } catch (e) {
+          _showNotification('Erro ao salvar o Lava Rápido: $e', true);
+        }
+      }
+    }
   }
 
   @override
@@ -134,13 +169,13 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
                     text: 'Adicionar Serviço',
                     backgroundColor: Colors.green,
                     onPressed: () {
-                      CarWashService.addService(
-                        services: _services,
-                        name: _serviceNameController.text,
-                        price: _servicePriceController.text,
-                        duration: _serviceDurationController.text,
-                        context: context,
-                        showNotification: _showNotification,
+                      _services.add(
+                        Service(
+                          id: IdService.generateId(),
+                          name: _serviceNameController.text,
+                          price: double.parse(_servicePriceController.text),
+                          duration: _serviceDurationController.text,
+                        ),
                       );
                       setState(() {});
                       _serviceNameController.clear();
@@ -198,30 +233,7 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
                   CustomButton(
                     text: 'Salvar Lava Rápido',
                     backgroundColor: Colors.blue,
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (_services.isEmpty) {
-                          setState(() {
-                            _serviceError = true;
-                          });
-                        } else {
-                          setState(() {
-                            _serviceError = false;
-                          });
-                          widget.onAddCarWash(
-                            CarWash(
-                              name: _nameController.text,
-                              address: _addressController.text,
-                              cep: _cepController.text,
-                              services: _services,
-                            ),
-                          );
-                          _showNotification(
-                              'Lava Rápido salvo com sucesso!', false);
-                          Navigator.pop(context);
-                        }
-                      }
-                    },
+                    onPressed: _saveCarWash,
                   ),
                 ],
               ),

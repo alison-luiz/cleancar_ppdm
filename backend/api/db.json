@@ -1,0 +1,44 @@
+{
+  "carwashes": [
+    {
+      "id": "1",
+      "name": "Lava Jato Rápido",
+      "address": "Rua das Flores, 123",
+      "cep": "12345-678",
+      "services": [
+        {
+          "id": "1",
+          "name": "Lavagem Completa",
+          "price": 100,
+          "duration": "2h"
+        },
+        {
+          "id": "2",
+          "name": "Lavagem Simples",
+          "price": 50,
+          "duration": "1h"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Lava Rápido Premium",
+      "address": "Av. Brasil, 987",
+      "cep": "98765-432",
+      "services": [
+        {
+          "id": "3",
+          "name": "Lavagem com Cera",
+          "price": 150,
+          "duration": "2h30m"
+        },
+        {
+          "id": "4",
+          "name": "Lavagem Simples",
+          "price": 60,
+          "duration": "1h"
+        }
+      ]
+    }
+  ]
+}

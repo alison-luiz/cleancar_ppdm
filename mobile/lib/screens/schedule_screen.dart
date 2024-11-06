@@ -4,8 +4,7 @@ import '../models/appointment.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final List<Service> selectedServices;
-  final Function(Appointment)
-      onAddAppointment; // Recebe a função para adicionar agendamentos
+  final Function(Appointment) onAddAppointment;
 
   const ScheduleScreen(
       {super.key,
@@ -134,8 +133,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                           time: _selectedTime!,
                         );
 
-                        widget.onAddAppointment(
-                            appointment); // Adiciona o agendamento
+                        widget.onAddAppointment(appointment);
 
                         Navigator.pushNamed(context, '/appointments');
                       }

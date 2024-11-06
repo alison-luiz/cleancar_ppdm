@@ -107,12 +107,14 @@ class _CarWashDetailScreenState extends State<CarWashDetailScreen> {
                   ? () {
                       Navigator.pushNamed(
                         context,
-                        '/schedule', // Navega para a tela de agendamento
+                        '/schedule',
                         arguments: _selectedServices,
                       );
                     }
-                  : null, // Desabilita o botão se nenhum serviço for selecionado
-              child: const Text('Prosseguir para Agendamento'),
+                  : null,
+              child: const Center(
+                child: Text('Prosseguir para Agendamento'),
+              ),
             ),
           ],
         ),
