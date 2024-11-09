@@ -1,3 +1,4 @@
+import 'package:cleancar/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import '../models/car_wash.dart';
 import '../models/service.dart';
@@ -11,7 +12,7 @@ class CarWashDetailScreen extends StatefulWidget {
 }
 
 class _CarWashDetailScreenState extends State<CarWashDetailScreen> {
-  final List<Service> _selectedServices = [];
+  final List<Service> selectedServices = [];
 
   @override
   Widget build(BuildContext context) {
@@ -82,13 +83,13 @@ class _CarWashDetailScreenState extends State<CarWashDetailScreen> {
                       subtitle: Text(
                         'Preço: R\$ ${service.price.toStringAsFixed(2)}\nDuração: ${service.duration}',
                       ),
-                      value: _selectedServices.contains(service),
+                      value: selectedServices.contains(service),
                       onChanged: (bool? value) {
                         setState(() {
                           if (value == true) {
-                            _selectedServices.add(service);
+                            selectedServices.add(service);
                           } else {
-                            _selectedServices.remove(service);
+                            selectedServices.remove(service);
                           }
                         });
                       },
@@ -102,18 +103,20 @@ class _CarWashDetailScreenState extends State<CarWashDetailScreen> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: _selectedServices.isNotEmpty
-                  ? () {
-                      Navigator.pushNamed(
-                        context,
-                        '/schedule',
-                        arguments: _selectedServices,
-                      );
-                    }
-                  : null,
-              child: const Center(
-                child: Text('Prosseguir para Agendamento'),
+            Center(
+              child: CustomButton(
+                text: 'Prosseguir para Agendamento',
+                backgroundColor: Colors.green,
+                enabled: selectedServices.isNotEmpty,
+                onPressed: selectedServices.isNotEmpty
+                    ? () {
+                        Navigator.pushNamed(
+                          context,
+                          '/schedule',
+                          arguments: selectedServices,
+                        );
+                      }
+                    : () {},
               ),
             ),
           ],

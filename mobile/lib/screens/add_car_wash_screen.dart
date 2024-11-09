@@ -99,10 +99,17 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty || value.length < 5) {
                         return 'Nome não pode ser vazio';
                       }
                       return null;
+                    },
+                    onChanged: (_) {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _serviceError = false;
+                        });
+                      }
                     },
                   ),
                   const SizedBox(height: 16),
@@ -113,10 +120,17 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty || value.length < 5) {
                         return 'Endereço não pode ser vazio';
                       }
                       return null;
+                    },
+                    onChanged: (_) {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _serviceError = false;
+                        });
+                      }
                     },
                   ),
                   const SizedBox(height: 16),
@@ -132,6 +146,13 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
                         return 'CEP inválido. Formato: 12345-678';
                       }
                       return null;
+                    },
+                    onChanged: (_) {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _serviceError = false;
+                        });
+                      }
                     },
                   ),
                   const SizedBox(height: 20),
@@ -169,18 +190,30 @@ class AddCarWashScreenState extends State<AddCarWashScreen> {
                     text: 'Adicionar Serviço',
                     backgroundColor: Colors.green,
                     onPressed: () {
-                      _services.add(
-                        Service(
-                          id: IdService.generateId(),
-                          name: _serviceNameController.text,
-                          price: double.parse(_servicePriceController.text),
-                          duration: _serviceDurationController.text,
-                        ),
-                      );
-                      setState(() {});
-                      _serviceNameController.clear();
-                      _servicePriceController.clear();
-                      _serviceDurationController.clear();
+                      if (_serviceNameController.text.isNotEmpty &&
+                          _servicePriceController.text.isNotEmpty &&
+                          _serviceDurationController.text.isNotEmpty) {
+                        _services.add(
+                          Service(
+                            id: IdService.generateId(),
+                            name: _serviceNameController.text,
+                            price: double.parse(_servicePriceController.text),
+                            duration: _serviceDurationController.text,
+                          ),
+                        );
+
+                        setState(() {
+                          _serviceError = false;
+                        });
+
+                        _serviceNameController.clear();
+                        _servicePriceController.clear();
+                        _serviceDurationController.clear();
+                      } else {
+                        setState(() {
+                          _serviceError = true;
+                        });
+                      }
                     },
                   ),
                   const SizedBox(height: 20),

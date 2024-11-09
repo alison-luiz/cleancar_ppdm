@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/service.dart';
 import '../models/appointment.dart';
+import '../services/appointment_service.dart';
+import '../widgets/custom_button.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final List<Service> selectedServices;
@@ -18,6 +20,7 @@ class ScheduleScreen extends StatefulWidget {
 class ScheduleScreenState extends State<ScheduleScreen> {
   DateTime? _selectedDate;
   String? _selectedTime;
+  final AppointmentService _appointmentService = AppointmentService();
 
   final List<String> _availableTimes = [
     '08:00',
@@ -62,7 +65,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue),
+                  color: Colors.black87),
             ),
             const SizedBox(height: 10),
             GestureDetector(
@@ -72,7 +75,7 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blueAccent),
+                  border: Border.all(color: Colors.grey),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,9 +84,10 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                       _selectedDate != null
                           ? 'Data Selecionada: ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
                           : 'Nenhuma data selecionada',
-                      style: const TextStyle(fontSize: 16),
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.black87),
                     ),
-                    const Icon(Icons.calendar_today, color: Colors.blueAccent),
+                    const Icon(Icons.calendar_today, color: Colors.black54),
                   ],
                 ),
               ),
@@ -94,24 +98,30 @@ class ScheduleScreenState extends State<ScheduleScreen> {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue),
+                  color: Colors.black87),
             ),
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.blueAccent),
+                border: Border.all(color: Colors.grey),
               ),
               child: DropdownButton<String>(
-                hint: const Text('Selecione o horário'),
+                hint: const Text(
+                  'Selecione o horário',
+                  style: TextStyle(color: Colors.black54),
+                ),
                 value: _selectedTime,
                 isExpanded: true,
                 underline: Container(),
                 items: _availableTimes.map((time) {
                   return DropdownMenuItem<String>(
                     value: time,
-                    child: Text(time),
+                    child: Text(
+                      time,
+                      style: const TextStyle(color: Colors.black87),
+                    ),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
@@ -121,35 +131,28 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 30),
+            const Spacer(),
             Center(
-              child: ElevatedButton(
-                onPressed: _selectedDate != null && _selectedTime != null
-                    ? () {
-                        final appointment = Appointment(
-                          serviceId: widget.selectedServices.first.name,
-                          serviceName: widget.selectedServices.first.name,
-                          date: _selectedDate!,
-                          time: _selectedTime!,
-                        );
+              child: CustomButton(
+                text: 'Confirmar Agendamento',
+                backgroundColor: Colors.green,
+                enabled: _selectedDate != null && _selectedTime != null,
+                onPressed: () async {
+                  if (_selectedDate != null && _selectedTime != null) {
+                    final appointment = Appointment(
+                      serviceId: widget.selectedServices.first.id,
+                      serviceName: widget.selectedServices.first.name,
+                      date: _selectedDate!,
+                      time: _selectedTime!,
+                    );
 
-                        widget.onAddAppointment(appointment);
+                    await _appointmentService
+                        .createAppointment(appointment.toJson());
 
-                        Navigator.pushNamed(context, '/appointments');
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  'Confirmar Agendamento',
-                  style: TextStyle(fontSize: 18),
-                ),
+                    widget.onAddAppointment(appointment);
+                    Navigator.pushNamed(context, '/appointments');
+                  }
+                },
               ),
             ),
           ],

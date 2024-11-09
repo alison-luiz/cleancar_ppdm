@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('Início'),
       ),
       drawer: const CustomDrawer(),
       body: Stack(
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.pushNamed(context, '/list');
                   },
                   child: Text(
-                    'Ver Lava Rápidos',
+                    'Lista de Lava Rápidos',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.blueGrey[900],

@@ -1,44 +1,53 @@
 {
   "carwashes": [
     {
-      "id": "1",
-      "name": "Lava Jato Rápido",
-      "address": "Rua das Flores, 123",
-      "cep": "12345-678",
+      "id": "tC1sfmsuCiSQLXqD",
+      "name": "Lava Rapidão",
+      "address": "Rua Brasil, 158",
+      "cep": "87120-000",
       "services": [
         {
-          "id": "1",
-          "name": "Lavagem Completa",
-          "price": 100,
-          "duration": "2h"
+          "id": "TxdKrbiAUPR2UNMh",
+          "name": "Lavagem Simples",
+          "price": 80,
+          "duration": "3h"
         },
         {
-          "id": "2",
-          "name": "Lavagem Simples",
-          "price": 50,
-          "duration": "1h"
+          "id": "n4gEhliekeqyiu0y",
+          "name": "Lavagem Premium",
+          "price": 150,
+          "duration": "4h"
         }
       ]
     },
     {
-      "id": "2",
-      "name": "Lava Rápido Premium",
-      "address": "Av. Brasil, 987",
-      "cep": "98765-432",
+      "id": "HYuvkp3vj6lc7iMR",
+      "name": "LavaJato Estrelinha",
+      "address": "Rua das Camelias, 3147",
+      "cep": "87154-487",
       "services": [
         {
-          "id": "3",
-          "name": "Lavagem com Cera",
-          "price": 150,
+          "id": "54b9tCr1SQT30bIW",
+          "name": "Lavagem Completa",
+          "price": 50,
           "duration": "2h30m"
         },
         {
-          "id": "4",
-          "name": "Lavagem Simples",
-          "price": 60,
-          "duration": "1h"
+          "id": "3V3p6RT6ZKYAUeIA",
+          "name": "Lavagem Completa + Cera",
+          "price": 150,
+          "duration": "3h"
         }
       ]
+    }
+  ],
+  "appointments": [
+    {
+      "id": "5c19",
+      "serviceId": "n4gEhliekeqyiu0y",
+      "serviceName": "Lavagem Premium",
+      "date": "2024-11-08T00:00:00.000",
+      "time": "16:00"
     }
   ]
 }

@@ -1,11 +1,38 @@
-import 'package:cleancar/widgets/custom_drawer.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/appointment.dart';
+import '../services/appointment_service.dart';
+import '../widgets/custom_drawer.dart';
 
-class AppointmentListScreen extends StatelessWidget {
-  final List<Appointment> appointments;
+class AppointmentListScreen extends StatefulWidget {
+  const AppointmentListScreen({super.key});
 
-  const AppointmentListScreen({super.key, required this.appointments});
+  @override
+  _AppointmentListScreenState createState() => _AppointmentListScreenState();
+}
+
+class _AppointmentListScreenState extends State<AppointmentListScreen> {
+  final AppointmentService _appointmentService = AppointmentService();
+  List<Appointment> appointments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAppointments();
+  }
+
+  Future<void> _fetchAppointments() async {
+    try {
+      String response = await _appointmentService.getAllAppointments();
+      List<dynamic> appointmentsData = jsonDecode(response);
+      setState(() {
+        appointments =
+            appointmentsData.map((data) => Appointment.fromJson(data)).toList();
+      });
+    } catch (e) {
+      print("Erro ao carregar os agendamentos: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

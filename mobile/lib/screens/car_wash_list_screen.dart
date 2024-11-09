@@ -19,14 +19,14 @@ class CarWashListScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: carWashes.length,
           itemBuilder: (context, index) {
-            return _buildCarWashCard(context, carWashes[index]);
+            return buildCarWashCard(context, carWashes[index]);
           },
         ),
       ),
     );
   }
 
-  Widget _buildCarWashCard(BuildContext context, CarWash carWash) {
+  Widget buildCarWashCard(BuildContext context, CarWash carWash) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 10),

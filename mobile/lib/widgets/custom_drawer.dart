@@ -23,7 +23,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: const Text('Dashboard'),
+            title: const Text('Início'),
             onTap: () {
               Navigator.pushNamed(context, '/');
             },

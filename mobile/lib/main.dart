@@ -24,24 +24,20 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   List<CarWash> carWashes = [];
-  List<Appointment> _appointments = [];
-  late final CarWashService _carWashService;
+  List<Appointment> appointments = [];
 
-  void _addAppointment(Appointment appointment) {
-    setState(() {
-      _appointments.add(appointment);
-    });
-  }
+  late final CarWashService carWashService;
 
   @override
   void initState() {
     super.initState();
-    _fetchCarWashes();
+    carWashService = CarWashService();
+    fetchCarWashes();
   }
 
-  Future<void> _fetchCarWashes() async {
+  Future<void> fetchCarWashes() async {
     try {
-      String response = await _carWashService.getAll();
+      String response = await carWashService.getAll();
       List<dynamic> carWashesData = jsonDecode(response);
       setState(() {
         carWashes =
@@ -50,6 +46,12 @@ class MyAppState extends State<MyApp> {
     } catch (e) {
       print("Erro ao carregar os lava-rápidos: $e");
     }
+  }
+
+  void addAppointment(Appointment appointment) {
+    setState(() {
+      appointments.add(appointment);
+    });
   }
 
   @override
@@ -81,11 +83,9 @@ class MyAppState extends State<MyApp> {
         '/schedule': (context) => ScheduleScreen(
               selectedServices:
                   ModalRoute.of(context)!.settings.arguments as List<Service>,
-              onAddAppointment: _addAppointment,
+              onAddAppointment: addAppointment,
             ),
-        '/appointments': (context) => AppointmentListScreen(
-              appointments: _appointments,
-            ),
+        '/appointments': (context) => const AppointmentListScreen(),
       },
     );
   }
