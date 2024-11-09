@@ -6,5 +6,3 @@ Em seguida iniciar o Json-Server
 
 Entrar na pasta raiz do mobile
 -> flutter pub get
-
--> flutter run
